@@ -1,0 +1,171 @@
+<div class="space-y-6">
+
+  <div>
+
+    <h1 class="text-4xl font-bold text-white">
+      System Settings
+    </h1>
+
+    <p class="text-zinc-500 mt-2">
+      Configure AI monitoring and detection settings
+    </p>
+
+  </div>
+
+  <div class="grid grid-cols-2 gap-6">
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-6">
+
+      <h2 class="text-2xl font-bold text-white">
+        AI Detection Settings
+      </h2>
+
+      <div>
+
+        <div class="flex items-center justify-between mb-3">
+
+          <p class="text-zinc-400">
+            Detection Confidence
+          </p>
+
+          <p class="text-cyan-400 font-bold">
+            {{ confidence }}
+          </p>
+
+        </div>
+
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          [(ngModel)]="confidence"
+          class="w-full"
+        />
+
+      </div>
+
+      <div>
+
+        <div class="flex items-center justify-between mb-3">
+
+          <p class="text-zinc-400">
+            FPS Processing
+          </p>
+
+          <p class="text-cyan-400 font-bold">
+            {{ fps }}
+          </p>
+
+        </div>
+
+        <input
+          type="range"
+          min="1"
+          max="60"
+          step="1"
+          [(ngModel)]="fps"
+          class="w-full"
+        />
+
+      </div>
+
+      <div class="bg-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+
+        <div>
+
+          <p class="text-white font-semibold">
+            Recording Enabled
+          </p>
+
+          <p class="text-zinc-500 text-sm mt-1">
+            Save intrusion videos automatically
+          </p>
+
+        </div>
+
+        <input
+          type="checkbox"
+          [(ngModel)]="recording"
+          class="w-6 h-6"
+        />
+
+      </div>
+
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 space-y-6">
+
+      <h2 class="text-2xl font-bold text-white">
+        Notifications Settings
+      </h2>
+
+      <div class="bg-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+
+        <div>
+
+          <p class="text-white font-semibold">
+            Email Alerts
+          </p>
+
+          <p class="text-zinc-500 text-sm mt-1">
+            Send alerts to administrator email
+          </p>
+
+        </div>
+
+        <input
+          type="checkbox"
+          [(ngModel)]="emailAlerts"
+          class="w-6 h-6"
+        />
+
+      </div>
+
+      <div class="bg-zinc-800 rounded-2xl p-5 flex items-center justify-between">
+
+        <div>
+
+          <p class="text-white font-semibold">
+            Telegram Alerts
+          </p>
+
+          <p class="text-zinc-500 text-sm mt-1">
+            Send Telegram intrusion notifications
+          </p>
+
+        </div>
+
+        <input
+          type="checkbox"
+          [(ngModel)]="telegramAlerts"
+          class="w-6 h-6"
+        />
+
+      </div>
+
+      <div>
+
+        <p class="text-zinc-400 mb-3">
+          RTSP Stream URL
+        </p>
+
+        <input
+          type="text"
+          [(ngModel)]="rtspUrl"
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white outline-none focus:border-cyan-400"
+        />
+
+      </div>
+
+      <button
+        class="w-full bg-cyan-500 hover:bg-cyan-400 transition rounded-2xl py-4 text-black font-bold text-lg"
+      >
+        Save Settings
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,182 @@
+<div class="space-y-6">
+
+  <div>
+
+    <h1 class="text-4xl font-bold text-white">
+      Security Reports
+    </h1>
+
+    <p class="text-zinc-500 mt-2">
+      AI analytics and monitoring statistics
+    </p>
+
+  </div>
+
+  <div class="grid grid-cols-4 gap-5">
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <p class="text-zinc-500 text-sm">
+        Total Alerts
+      </p>
+
+      <h2 class="text-5xl font-bold text-red-500 mt-4">
+        {{ totalAlerts }}
+      </h2>
+
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <p class="text-zinc-500 text-sm">
+        Restricted Intrusions
+      </p>
+
+      <h2 class="text-5xl font-bold text-orange-400 mt-4">
+        {{ restrictedZones }}
+      </h2>
+
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <p class="text-zinc-500 text-sm">
+        YOLO Accuracy
+      </p>
+
+      <h2 class="text-5xl font-bold text-emerald-400 mt-4">
+        {{ accuracy }}%
+      </h2>
+
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <p class="text-zinc-500 text-sm">
+        Active Cameras
+      </p>
+
+      <h2 class="text-5xl font-bold text-cyan-400 mt-4">
+        {{ activeCameras }}
+      </h2>
+
+    </div>
+
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    <div class="col-span-2 bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <div class="flex items-center justify-between mb-8">
+
+        <h2 class="text-2xl font-bold text-white">
+          Weekly Alerts Activity
+        </h2>
+
+        <div class="bg-zinc-800 rounded-xl px-4 py-2 text-zinc-400">
+          Last 7 Days
+        </div>
+
+      </div>
+
+      <div class="h-[350px] flex items-end gap-5">
+
+        @for (item of chartData; track item) {
+
+          <div class="flex-1 flex flex-col justify-end">
+
+            <div
+              class="bg-cyan-400 rounded-t-2xl"
+              [style.height.px]="item * 3"
+            ></div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+
+      <h2 class="text-2xl font-bold text-white mb-6">
+        Most Active Cameras
+      </h2>
+
+      <div class="space-y-5">
+
+        <div class="bg-zinc-800 rounded-2xl p-4">
+
+          <div class="flex items-center justify-between">
+
+            <div>
+
+              <p class="text-white font-semibold">
+                Main Entrance
+              </p>
+
+              <p class="text-zinc-500 text-sm mt-1">
+                28 Alerts
+              </p>
+
+            </div>
+
+            <div class="w-4 h-4 rounded-full bg-red-500"></div>
+
+          </div>
+
+        </div>
+
+        <div class="bg-zinc-800 rounded-2xl p-4">
+
+          <div class="flex items-center justify-between">
+
+            <div>
+
+              <p class="text-white font-semibold">
+                Parking Area
+              </p>
+
+              <p class="text-zinc-500 text-sm mt-1">
+                18 Alerts
+              </p>
+
+            </div>
+
+            <div class="w-4 h-4 rounded-full bg-orange-400"></div>
+
+          </div>
+
+        </div>
+
+        <div class="bg-zinc-800 rounded-2xl p-4">
+
+          <div class="flex items-center justify-between">
+
+            <div>
+
+              <p class="text-white font-semibold">
+                Warehouse
+              </p>
+
+              <p class="text-zinc-500 text-sm mt-1">
+                11 Alerts
+              </p>
+
+            </div>
+
+            <div class="w-4 h-4 rounded-full bg-cyan-400"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

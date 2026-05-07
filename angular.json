@@ -26,7 +26,13 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src"
+              ]
+            },
+            "inlineStyleLanguage": "css"
           },
           "configurations": {
             "production": {

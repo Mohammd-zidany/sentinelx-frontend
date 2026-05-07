@@ -1,0 +1,77 @@
+<div class="space-y-6">
+
+  <div>
+
+    <h1 class="text-4xl font-bold text-white">
+      Cameras Monitoring
+    </h1>
+
+    <p class="text-zinc-500 mt-2">
+      Real-time AI camera monitoring system
+    </p>
+
+  </div>
+
+  <div class="grid grid-cols-3 gap-6">
+
+    @for (camera of cameras; track camera.name) {
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+
+        <div class="relative h-72 bg-black flex items-center justify-center">
+
+          <div class="absolute top-4 left-4">
+
+            @if (camera.status === 'LIVE') {
+
+              <div class="bg-emerald-500 text-black text-sm px-4 py-2 rounded-xl font-bold">
+                LIVE
+              </div>
+
+            }
+
+            @if (camera.status === 'REC') {
+
+              <div class="bg-red-500 text-white text-sm px-4 py-2 rounded-xl font-bold">
+                REC
+              </div>
+
+            }
+
+          </div>
+
+          <p class="text-zinc-500 text-xl">
+            Camera Stream
+          </p>
+
+        </div>
+
+        <div class="p-5">
+
+          <div class="flex items-center justify-between">
+
+            <div>
+
+              <h2 class="text-2xl font-bold text-white">
+                {{ camera.name }}
+              </h2>
+
+              <p class="text-zinc-500 mt-2">
+                AI Monitoring Active
+              </p>
+
+            </div>
+
+            <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>
