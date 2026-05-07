@@ -12,7 +12,7 @@ export class Navbar {
 
   router = inject(Router);
 
-  currentPage = 'Dashboard';
+  currentPage: string = 'لوحة التحكم';
 
   constructor() {
 
@@ -23,18 +23,39 @@ export class Navbar {
         const url = event.urlAfterRedirects;
 
         if (url.includes('cameras')) {
-          this.currentPage = 'Cameras';
-        } else if (url.includes('alerts')) {
-          this.currentPage = 'Alerts';
-        } else if (url.includes('zones')) {
-          this.currentPage = 'Restricted Zones';
-        } else if (url.includes('reports')) {
-          this.currentPage = 'Reports';
-        } else if (url.includes('settings')) {
-          this.currentPage = 'Settings';
+
+          this.currentPage = 'الكاميرات';
+
         }
+
+        else if (url.includes('alerts')) {
+
+          this.currentPage = 'التنبيهات';
+
+        }
+
+        else if (url.includes('zones')) {
+
+          this.currentPage = 'المناطق المحظورة';
+
+        }
+
+        else if (url.includes('reports')) {
+
+          this.currentPage = 'التقارير';
+
+        }
+
+        else if (url.includes('settings')) {
+
+          this.currentPage = 'الإعدادات';
+
+        }
+
         else {
-          this.currentPage = 'Dashboard';
+
+          this.currentPage = 'لوحة التحكم';
+
         }
 
       }

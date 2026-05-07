@@ -1,17 +1,19 @@
 <div class="space-y-6">
 
-  <div>
+  <!-- عنوان الصفحة -->
+  <div class="text-right">
 
     <h1 class="text-4xl font-bold text-white">
-      Security Alerts
+      التنبيهات الأمنية
     </h1>
 
     <p class="text-zinc-500 mt-2">
-      Real-time intrusion and AI detection alerts
+      تنبيهات التسلل والكشف الذكي في الوقت الحقيقي
     </p>
 
   </div>
 
+  <!-- قائمة التنبيهات -->
   <div class="space-y-5">
 
     @for (alert of alerts; track alert.time) {
@@ -20,11 +22,41 @@
 
         <div class="flex items-center justify-between">
 
-          <div class="flex items-center gap-5">
+          <!-- مستوى الخطورة -->
+          <div class="text-left">
 
-            <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center text-3xl">
-              🚨
-            </div>
+            @if (alert.level === 'HIGH') {
+
+              <div class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl font-bold">
+                خطر عالي
+              </div>
+
+            }
+
+            @if (alert.level === 'MEDIUM') {
+
+              <div class="bg-orange-500/20 text-orange-400 px-4 py-2 rounded-xl font-bold">
+                خطر متوسط
+              </div>
+
+            }
+
+            @if (alert.level === 'LOW') {
+
+              <div class="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-xl font-bold">
+                خطر منخفض
+              </div>
+
+            }
+
+            <p class="text-zinc-500 text-sm mt-3">
+              {{ alert.time }}
+            </p>
+
+          </div>
+
+          <!-- معلومات التنبيه -->
+          <div class="flex items-center gap-5 text-right">
 
             <div>
 
@@ -38,37 +70,9 @@
 
             </div>
 
-          </div>
-
-          <div class="text-right">
-
-            @if (alert.level === 'HIGH') {
-
-              <div class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl font-bold">
-                HIGH
-              </div>
-
-            }
-
-            @if (alert.level === 'MEDIUM') {
-
-              <div class="bg-orange-500/20 text-orange-400 px-4 py-2 rounded-xl font-bold">
-                MEDIUM
-              </div>
-
-            }
-
-            @if (alert.level === 'LOW') {
-
-              <div class="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-xl font-bold">
-                LOW
-              </div>
-
-            }
-
-            <p class="text-zinc-500 text-sm mt-3">
-              {{ alert.time }}
-            </p>
+            <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center text-3xl">
+              🚨
+            </div>
 
           </div>
 

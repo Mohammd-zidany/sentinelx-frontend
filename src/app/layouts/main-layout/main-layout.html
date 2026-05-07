@@ -1,13 +1,27 @@
-<div class="flex min-h-screen bg-zinc-950 text-white">
+<div class="h-screen bg-zinc-950 text-white overflow-hidden flex">
 
-  <app-sidebar />
+  <!-- القائمة الجانبية -->
+  <div class="w-72 h-screen fixed top-0 right-0 z-50">
 
-  <div class="flex-1 flex flex-col">
+    <app-sidebar />
 
-    <app-navbar />
+  </div>
 
-    <main class="p-6">
+  <!-- المحتوى الرئيسي -->
+  <div class="flex-1 mr-72 flex flex-col h-screen">
+
+    <!-- الشريط العلوي -->
+    <div class="h-24 fixed top-0 left-0 right-72 z-40 bg-zinc-950 border-b border-zinc-800">
+
+      <app-navbar />
+
+    </div>
+
+    <!-- المحتوى القابل للتمرير -->
+    <main class="flex-1 overflow-y-auto mt-24 p-6">
+
       <router-outlet />
+
     </main>
 
   </div>

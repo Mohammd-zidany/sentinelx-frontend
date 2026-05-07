@@ -1,11 +1,13 @@
 <div class="space-y-6">
 
+  <!-- الإحصائيات -->
   <div class="grid grid-cols-4 gap-5">
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <!-- عدد الكاميرات -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
 
       <p class="text-zinc-500 text-sm">
-        Total Cameras
+        إجمالي الكاميرات
       </p>
 
       <h2 class="text-5xl font-bold text-cyan-400 mt-4">
@@ -14,10 +16,11 @@
 
     </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <!-- التنبيهات -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
 
       <p class="text-zinc-500 text-sm">
-        Alerts Today
+        تنبيهات اليوم
       </p>
 
       <h2 class="text-5xl font-bold text-red-500 mt-4">
@@ -26,10 +29,11 @@
 
     </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <!-- الأشخاص المكتشفون -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
 
       <p class="text-zinc-500 text-sm">
-        Detected People
+        الأشخاص المكتشفون
       </p>
 
       <h2 class="text-5xl font-bold text-orange-400 mt-4">
@@ -38,10 +42,11 @@
 
     </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <!-- دقة YOLO -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
 
       <p class="text-zinc-500 text-sm">
-        YOLO Accuracy
+        دقة نموذج YOLO
       </p>
 
       <h2 class="text-5xl font-bold text-emerald-400 mt-4">
@@ -52,76 +57,85 @@
 
   </div>
 
+  <!-- المحتوى الرئيسي -->
   <div class="grid grid-cols-3 gap-6">
 
+    <!-- البث المباشر -->
     <div class="col-span-2 bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
 
       <div class="flex items-center justify-between mb-5">
 
-        <h2 class="text-2xl font-bold">
-          Live Camera Feed
-        </h2>
-
+        <!-- حالة البث -->
         <div class="flex items-center gap-2 text-emerald-400">
 
           <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
 
-          LIVE
+          مباشر
 
         </div>
 
+        <!-- العنوان -->
+        <h2 class="text-2xl font-bold text-right">
+          البث المباشر للكاميرات
+        </h2>
+
       </div>
 
+      <!-- منطقة البث -->
       <div class="h-[500px] rounded-3xl bg-black flex items-center justify-center border border-zinc-800">
 
         <p class="text-zinc-500 text-2xl">
-          Camera Stream Here
+          سيتم عرض البث المباشر هنا
         </p>
 
       </div>
 
     </div>
 
+    <!-- آخر التنبيهات -->
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
 
-      <h2 class="text-2xl font-bold mb-5">
-        Latest Alerts
+      <h2 class="text-2xl font-bold mb-5 text-right">
+        آخر التنبيهات
       </h2>
 
       <div class="space-y-4">
 
-        <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20">
+        <!-- تنبيه -->
+        <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20 text-right">
 
           <p class="text-red-400 font-semibold">
-            Intrusion Detected
+            تم اكتشاف تسلل
           </p>
 
           <p class="text-zinc-500 text-sm mt-2">
-            Main Entrance Camera
+            كاميرا المدخل الرئيسي
           </p>
 
         </div>
 
-        <div class="bg-zinc-800 rounded-2xl p-4 border border-orange-500/20">
+        <!-- تنبيه -->
+        <div class="bg-zinc-800 rounded-2xl p-4 border border-orange-500/20 text-right">
 
           <p class="text-orange-400 font-semibold">
-            Restricted Time Access
+            دخول في وقت محظور
           </p>
 
           <p class="text-zinc-500 text-sm mt-2">
-            Parking Camera
+            كاميرا موقف السيارات
           </p>
 
         </div>
 
-        <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20">
+        <!-- تنبيه -->
+        <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20 text-right">
 
           <p class="text-red-400 font-semibold">
-            Motion Detected
+            تم اكتشاف حركة
           </p>
 
           <p class="text-zinc-500 text-sm mt-2">
-            Warehouse Camera
+            كاميرا المستودع
           </p>
 
         </div>

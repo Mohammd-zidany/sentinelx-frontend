@@ -1,0 +1,73 @@
+<div class="min-h-screen bg-zinc-950 flex items-center justify-center p-6">
+
+  <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-[32px] p-8">
+
+    <!-- الشعار -->
+    <div class="text-center mb-10">
+
+      <h1 class="text-5xl font-extrabold text-cyan-400">
+        SENTINELX
+      </h1>
+
+      <p class="text-zinc-500 mt-4">
+        نظام مراقبة ذكي باستخدام الذكاء الاصطناعي
+      </p>
+
+    </div>
+
+    <!-- النموذج -->
+    <div class="space-y-6">
+
+      <!-- البريد -->
+      <div>
+
+        <label class="block text-zinc-400 mb-3 text-right">
+          البريد الإلكتروني
+        </label>
+
+        <input
+          type="email"
+          [(ngModel)]="email"
+          placeholder="example@email.com"
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white text-right outline-none focus:border-cyan-400"
+        />
+
+      </div>
+
+      <!-- كلمة المرور -->
+      <div>
+
+        <label class="block text-zinc-400 mb-3 text-right">
+          كلمة المرور
+        </label>
+
+        <input
+          type="password"
+          [(ngModel)]="password"
+          placeholder="********"
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white text-right outline-none focus:border-cyan-400"
+        />
+
+      </div>
+
+      <!-- زر الدخول -->
+      <button
+        class="w-full bg-cyan-500 hover:bg-cyan-400 transition rounded-2xl py-4 text-black font-bold text-lg"
+      >
+        تسجيل الدخول
+      </button>
+
+    </div>
+
+    <!-- تذييل -->
+    <div class="mt-8 text-center">
+
+      <p class="text-zinc-600 text-sm">
+        SentinelX AI Security Monitoring System
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
