@@ -1,141 +1,371 @@
 <div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <!-- Buttons -->
+    <div class="flex items-center gap-3">
+      <button
+        class="bg-zinc-900 border border-zinc-800 hover:border-cyan-500 transition px-5 py-3 rounded-2xl text-white"
+      >
+        إعادة ضبط المناطق
+      </button>
 
-  <!-- عنوان الصفحة -->
-  <div class="text-right">
+      <button
+        (click)="saveZone()"
+        class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:opacity-90 transition px-5 py-3 rounded-2xl text-white font-semibold"
+      >
+        + إضافة منطقة جديدة
+      </button>
+    </div>
 
-    <h1 class="text-4xl font-bold text-white">
-      المناطق المحظورة
-    </h1>
+    <!-- Camera Selector -->
+    <div class="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-2xl px-5 py-3">
+      <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
 
-    <p class="text-zinc-500 mt-2">
-      إعداد مناطق الحماية الذكية وكشف التسلل باستخدام الذكاء الاصطناعي
-    </p>
+      <p
+        class="text-sm font-semibold"
+        [class.text-emerald-400]="selectedCamera()?.running"
+        [class.text-red-400]="!selectedCamera()?.running"
+      >
+        {{ selectedCamera()?.running ? 'LIVE' : 'OFFLINE' }}
+      </p>
 
+      <select
+        class="bg-transparent outline-none text-white"
+        (change)="selectCamera(cameras()[$any($event.target).selectedIndex])"
+      >
+        @for (camera of cameras(); track camera.id) {
+          <option>
+            {{ camera.name }}
+          </option>
+        }
+      </select>
+    </div>
   </div>
 
-  <!-- المناطق -->
-  <div class="grid grid-cols-2 gap-6">
+  <!-- Main Layout -->
+  <div class="grid grid-cols-12 gap-6">
+    <!-- Left Toolbar -->
+    <div
+      class="col-span-1 bg-zinc-900 border border-zinc-800 rounded-3xl p-3 flex flex-col items-center gap-5"
+    >
+      <!-- Draw -->
+      <div class="relative group">
+        <button
+          (click)="startDrawing()"
+          class="w-14 h-14 rounded-2xl text-xl transition"
+          [class.bg-cyan-500/20]="drawingMode()"
+          [class.text-cyan-400]="drawingMode()"
+          [class.ring-2]="drawingMode()"
+          [class.ring-cyan-500]="drawingMode()"
+          [class.hover:bg-cyan-500/30]="drawingMode()"
+          [class.hover:bg-zinc-800]="!drawingMode()"
+          [class.text-zinc-400]="!drawingMode()"
+        >
+          ⬚
+        </button>
 
-    @for (zone of zones; track zone.name) {
-
-      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
-
-        <!-- العنوان والحالة -->
-        <div class="flex items-center justify-between">
-
-          <!-- حالة المنطقة -->
-          @if (zone.active) {
-
-            <div class="bg-emerald-500/20 text-emerald-400 px-4 py-2 rounded-xl">
-              مفعّلة
-            </div>
-
-          }
-
-          @if (!zone.active) {
-
-            <div class="bg-red-500/20 text-red-400 px-4 py-2 rounded-xl">
-              متوقفة
-            </div>
-
-          }
-
-          <!-- اسم المنطقة -->
-          <div class="flex items-center gap-4">
-
-            <h2 class="text-2xl font-bold text-white">
-              {{ zone.name }}
-            </h2>
-
-            @if (zone.color === 'red') {
-
-              <div class="w-5 h-5 rounded-full bg-red-500"></div>
-
-            }
-
-            @if (zone.color === 'orange') {
-
-              <div class="w-5 h-5 rounded-full bg-orange-400"></div>
-
-            }
-
-            @if (zone.color === 'emerald') {
-
-              <div class="w-5 h-5 rounded-full bg-emerald-500"></div>
-
-            }
-
-            @if (zone.color === 'cyan') {
-
-              <div class="w-5 h-5 rounded-full bg-cyan-400"></div>
-
-            }
-
-          </div>
-
+        <div
+          class="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition pointer-events-none bg-zinc-800 text-white text-sm px-3 py-2 rounded-xl whitespace-nowrap border border-zinc-700 z-50"
+        >
+          رسم منطقة
         </div>
-
-        <!-- الحساسية -->
-        <div class="mt-8">
-
-          <div class="flex items-center justify-between mb-3">
-
-            <p class="text-white font-bold">
-              {{ zone.sensitivity }}%
-            </p>
-
-            <p class="text-zinc-400">
-              حساسية الكشف
-            </p>
-
-          </div>
-
-          <div class="w-full h-3 rounded-full bg-zinc-800 overflow-hidden">
-
-            <div
-              class="h-full bg-cyan-400 rounded-full"
-              [style.width.%]="zone.sensitivity"
-            ></div>
-
-          </div>
-
-        </div>
-
-        <!-- التفاصيل -->
-        <div class="mt-8 grid grid-cols-2 gap-4">
-
-          <!-- الأيام -->
-          <div class="bg-zinc-800 rounded-2xl p-4 text-right">
-
-            <p class="text-zinc-500 text-sm">
-              أيام التفعيل
-            </p>
-
-            <p class="text-white font-semibold mt-2">
-              طوال الأسبوع
-            </p>
-
-          </div>
-
-          <!-- الوقت -->
-          <div class="bg-zinc-800 rounded-2xl p-4 text-right">
-
-            <p class="text-zinc-500 text-sm">
-              وقت المراقبة
-            </p>
-
-            <p class="text-white font-semibold mt-2">
-              24 ساعة
-            </p>
-
-          </div>
-
-        </div>
-
       </div>
 
-    }
+      <!-- Edit -->
+      <div class="relative group">
+        <button class="w-14 h-14 rounded-2xl hover:bg-zinc-800 text-zinc-400 text-xl transition">
+          ✏️
+        </button>
 
+        <div
+          class="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition pointer-events-none bg-zinc-800 text-white text-sm px-3 py-2 rounded-xl whitespace-nowrap border border-zinc-700 z-50"
+        >
+          تعديل المنطقة
+        </div>
+      </div>
+
+      <!-- Finish -->
+      <div class="relative group">
+        <button
+          (click)="finishDrawing()"
+          class="w-14 h-14 rounded-2xl hover:bg-emerald-500/20 text-emerald-400 text-xl transition"
+        >
+          ⬡
+        </button>
+
+        <div
+          class="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition pointer-events-none bg-zinc-800 text-white text-sm px-3 py-2 rounded-xl whitespace-nowrap border border-zinc-700 z-50"
+        >
+          إنهاء الرسم
+        </div>
+      </div>
+
+      <!-- Measure -->
+      <div class="relative group">
+        <button class="w-14 h-14 rounded-2xl hover:bg-zinc-800 text-zinc-400 text-xl transition">
+          📏
+        </button>
+
+        <div
+          class="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition pointer-events-none bg-zinc-800 text-white text-sm px-3 py-2 rounded-xl whitespace-nowrap border border-zinc-700 z-50"
+        >
+          أدوات القياس
+        </div>
+      </div>
+
+      <!-- Delete -->
+      <div class="relative group">
+        <button
+          (click)="resetDrawing()"
+          class="w-14 h-14 rounded-2xl hover:bg-red-500/20 text-red-400 text-xl transition"
+        >
+          🗑️
+        </button>
+
+        <div
+          class="absolute top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition pointer-events-none bg-zinc-800 text-white text-sm px-3 py-2 rounded-xl whitespace-nowrap border border-zinc-700 z-50"
+        >
+          حذف الرسم
+        </div>
+      </div>
+    </div>
+
+    <!-- Camera View -->
+    <div class="col-span-7 bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+      <!-- Stream -->
+      <div class="relative h-[550px] bg-black">
+        <img
+          [src]="'http://127.0.0.1:8001/api/monitoring/stream/' + selectedCamera()?.id"
+          class="w-full h-full object-contain bg-black"
+        />
+
+        <!-- LIVE -->
+        <div
+          class="absolute top-5 left-5 px-4 py-2 rounded-xl font-semibold border"
+          [class.bg-emerald-500/20]="selectedCamera()?.running"
+          [class.border-emerald-500/30]="selectedCamera()?.running"
+          [class.text-emerald-400]="selectedCamera()?.running"
+          [class.bg-red-500/20]="!selectedCamera()?.running"
+          [class.border-red-500/30]="!selectedCamera()?.running"
+          [class.text-red-400]="!selectedCamera()?.running"
+        >
+          {{ selectedCamera()?.running ? 'LIVE' : 'OFFLINE' }}
+        </div>
+
+        <!-- Zone -->
+        <!-- Drawing Layer -->
+        <svg class="absolute inset-0 w-full h-full" (click)="onVideoClick($event)">
+          <!-- Polygon -->
+          <polygon
+            *ngIf="polygonPoints().length >= 3"
+            [attr.points]="polygonSvgPoints()"
+            fill="rgba(255,0,0,0.2)"
+            stroke="#ff3b3b"
+            stroke-width="3"
+          />
+
+          <!-- Points -->
+          @for (point of polygonPoints(); track $index) {
+            <circle [attr.cx]="point.x" [attr.cy]="point.y" r="6" fill="#ff3b3b" />
+          }
+        </svg>
+      </div>
+
+      <!-- Bottom Controls -->
+      <div class="h-20 border-t border-zinc-800 px-6 flex items-center justify-between">
+        <div class="flex items-center gap-4 text-zinc-400 text-xl">
+          <button class="hover:text-cyan-400 transition">🎥</button>
+
+          <button class="hover:text-cyan-400 transition">📷</button>
+
+          <button class="hover:text-cyan-400 transition">⛶</button>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <button class="w-10 h-10 rounded-xl bg-zinc-800 text-white">-</button>
+
+          <div class="text-white font-semibold">100%</div>
+
+          <button class="w-10 h-10 rounded-xl bg-zinc-800 text-white">+</button>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Zones List -->
+  <div class="col-span-4 bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold text-white">المناطق المحظورة</h2>
+
+      <div class="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-xl text-sm">
+        {{ zones().length }} مناطق
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      @for (zone of zones(); track zone.id) {
+        <div class="bg-zinc-800 rounded-2xl p-4 border border-zinc-700">
+          <div class="flex items-center justify-between">
+            <!-- Actions -->
+            <div class="flex items-center gap-3">
+              <button class="text-zinc-500 hover:text-cyan-400 transition">✏️</button>
+
+              <button class="text-zinc-500 hover:text-red-500 transition">🗑️</button>
+
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" class="sr-only peer" [checked]="zone.is_active" />
+
+                <div
+                  class="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-emerald-500"
+                ></div>
+              </label>
+            </div>
+
+            <!-- Zone Info -->
+            <div class="flex items-center gap-3">
+              <div class="text-right">
+                <p class="text-white font-semibold">
+                  {{ zone.name }}
+                </p>
+
+                <p class="text-zinc-500 text-sm mt-1">منطقة مراقبة</p>
+              </div>
+
+              <!-- Color -->
+              <div
+                class="w-4 h-4 rounded-full"
+                [ngClass]="{
+                  'bg-red-500': zone.color === 'red',
+                  'bg-orange-400': zone.color === 'orange',
+                  'bg-emerald-500': zone.color === 'emerald',
+                  'bg-cyan-400': zone.color === 'cyan',
+                }"
+              ></div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Settings -->
+<div class="grid grid-cols-2 gap-6">
+  <!-- Zone Settings -->
+  <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <h2 class="text-2xl font-bold text-white mb-6 text-right">إعدادات المنطقة</h2>
+
+    <div class="space-y-6">
+      <!-- Name -->
+      <div>
+        <label class="text-zinc-400 text-sm block mb-2 text-right"> اسم المنطقة </label>
+
+        <input
+          type="text"
+          value="المنطقة الحمراء"
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white outline-none focus:border-cyan-500"
+        />
+      </div>
+
+      <!-- Colors -->
+      <div>
+        <p class="text-zinc-400 text-sm mb-4 text-right">اللون</p>
+
+        <div class="flex items-center gap-4">
+          <button class="w-8 h-8 rounded-full bg-red-500 ring-4 ring-red-500/30"></button>
+          <button class="w-8 h-8 rounded-full bg-orange-400"></button>
+          <button class="w-8 h-8 rounded-full bg-yellow-400"></button>
+          <button class="w-8 h-8 rounded-full bg-emerald-500"></button>
+          <button class="w-8 h-8 rounded-full bg-cyan-400"></button>
+          <button class="w-8 h-8 rounded-full bg-purple-500"></button>
+        </div>
+      </div>
+
+      <!-- Sensitivity -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-cyan-400 font-bold">75%</p>
+
+          <p class="text-zinc-400">الحساسية</p>
+        </div>
+
+        <input type="range" class="w-full" value="75" />
+      </div>
+
+      <!-- Action -->
+      <div>
+        <label class="text-zinc-400 text-sm block mb-2 text-right"> الإجراء عند التسلل </label>
+
+        <select
+          class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white outline-none"
+        >
+          <option>إرسال تنبيه + تسجيل</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+    <h2 class="text-2xl font-bold text-white mb-6 text-right">جدول تفعيل المنطقة</h2>
+
+    <div class="space-y-6">
+      <!-- Mode -->
+      <div class="space-y-3 text-right">
+        <label class="flex items-center justify-end gap-3 text-white">
+          <span> طوال الوقت </span>
+
+          <input type="radio" checked />
+        </label>
+
+        <label class="flex items-center justify-end gap-3 text-white">
+          <span> أوقات محددة </span>
+
+          <input type="radio" />
+        </label>
+      </div>
+
+      <!-- Days -->
+      <div>
+        <p class="text-zinc-400 mb-4 text-right">الأيام</p>
+
+        <div class="grid grid-cols-7 gap-2">
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الأحد</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الإثنين</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الثلاثاء</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الأربعاء</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الخميس</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">الجمعة</button>
+
+          <button class="bg-blue-600 rounded-xl py-3 text-white">السبت</button>
+        </div>
+      </div>
+
+      <!-- Time -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="text-zinc-400 text-sm block mb-2 text-right"> من </label>
+
+          <input
+            type="time"
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white"
+          />
+        </div>
+
+        <div>
+          <label class="text-zinc-400 text-sm block mb-2 text-right"> إلى </label>
+
+          <input
+            type="time"
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 text-white"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,149 +1,302 @@
 <div class="space-y-6">
-
   <!-- الإحصائيات -->
   <div class="grid grid-cols-4 gap-5">
-
     <!-- عدد الكاميرات -->
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
-
-      <p class="text-zinc-500 text-sm">
-        إجمالي الكاميرات
-      </p>
+      <p class="text-zinc-500 text-sm">إجمالي الكاميرات</p>
 
       <h2 class="text-5xl font-bold text-cyan-400 mt-4">
-        {{ cameras }}
+        {{ camerasCount$ | async }}
       </h2>
-
     </div>
 
     <!-- التنبيهات -->
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
-
-      <p class="text-zinc-500 text-sm">
-        تنبيهات اليوم
-      </p>
+      <p class="text-zinc-500 text-sm">تنبيهات اليوم</p>
 
       <h2 class="text-5xl font-bold text-red-500 mt-4">
         {{ alerts }}
       </h2>
-
-    </div>
-
-    <!-- الأشخاص المكتشفون -->
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
-
-      <p class="text-zinc-500 text-sm">
-        الأشخاص المكتشفون
-      </p>
-
-      <h2 class="text-5xl font-bold text-orange-400 mt-4">
-        {{ detectedPeople }}
-      </h2>
-
     </div>
 
     <!-- دقة YOLO -->
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
+      <p class="text-zinc-500 text-sm">دقة نموذج YOLO</p>
 
-      <p class="text-zinc-500 text-sm">
-        دقة نموذج YOLO
-      </p>
-
-      <h2 class="text-5xl font-bold text-emerald-400 mt-4">
-        {{ accuracy }}%
-      </h2>
-
+      <h2 class="text-5xl font-bold text-emerald-400 mt-4">{{ accuracy }}%</h2>
     </div>
 
+    <!-- الأشخاص المكتشفين -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 text-right">
+      <p class="text-zinc-500 text-sm">الأشخاص المكتشفين</p>
+
+      <h2 class="text-5xl font-bold text-violet-400 mt-4">
+        {{ detectedPeople }}
+      </h2>
+    </div>
   </div>
 
   <!-- المحتوى الرئيسي -->
-  <div class="grid grid-cols-3 gap-6">
-
+  <div class="grid grid-cols-5 gap-6">
     <!-- البث المباشر -->
     <div class="col-span-2 bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
-
+      <!-- Header -->
       <div class="flex items-center justify-between mb-5">
-
         <!-- حالة البث -->
         <div class="flex items-center gap-2 text-emerald-400">
-
           <div class="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
 
           مباشر
-
         </div>
 
         <!-- العنوان -->
-        <h2 class="text-2xl font-bold text-right">
-          البث المباشر للكاميرات
-        </h2>
-
+        <h2 class="text-2xl font-bold text-right">البث المباشر للكاميرات</h2>
       </div>
 
-      <!-- منطقة البث -->
-      <div class="h-[500px] rounded-3xl bg-black flex items-center justify-center border border-zinc-800">
-
-        <p class="text-zinc-500 text-2xl">
-          سيتم عرض البث المباشر هنا
-        </p>
-
+      <!-- البث -->
+      <div class="relative w-full rounded-3xl bg-black border border-zinc-800 overflow-hidden">
+        <div *ngIf="selectedCamera">
+          <img
+            [src]="'http://127.0.0.1:8001/api/monitoring/stream/' + selectedCamera.id"
+            class="w-full object-contain bg-black"
+          />
+          <!-- اسم الكاميرا -->
+          <div class="absolute top-4 right-4 bg-black/70 px-4 py-2 rounded-xl text-white text-sm">
+            {{ selectedCamera.name }}
+          </div>
+        </div>
       </div>
 
+      <!-- أزرار الكاميرات -->
+      <div class="flex flex-wrap gap-3 mt-5">
+        <div *ngFor="let camera of cameras$ | async">
+          <button
+            (click)="changeCamera(camera)"
+            class="bg-zinc-800 border border-zinc-700 hover:bg-cyan-500 hover:text-black hover:border-cyan-500 transition px-5 py-3 rounded-2xl text-sm text-white"
+          >
+            {{ camera.name }}
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- آخر التنبيهات -->
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
-
-      <h2 class="text-2xl font-bold mb-5 text-right">
-        آخر التنبيهات
-      </h2>
+      <h2 class="text-2xl font-bold mb-5 text-right">آخر التنبيهات</h2>
 
       <div class="space-y-4">
-
         <!-- تنبيه -->
         <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20 text-right">
+          <p class="text-red-400 font-semibold">تم اكتشاف تسلل</p>
 
-          <p class="text-red-400 font-semibold">
-            تم اكتشاف تسلل
-          </p>
-
-          <p class="text-zinc-500 text-sm mt-2">
-            كاميرا المدخل الرئيسي
-          </p>
-
+          <p class="text-zinc-500 text-sm mt-2">camera 2</p>
         </div>
 
         <!-- تنبيه -->
         <div class="bg-zinc-800 rounded-2xl p-4 border border-orange-500/20 text-right">
+          <p class="text-orange-400 font-semibold">دخول في وقت محظور</p>
 
-          <p class="text-orange-400 font-semibold">
-            دخول في وقت محظور
-          </p>
-
-          <p class="text-zinc-500 text-sm mt-2">
-            كاميرا موقف السيارات
-          </p>
-
+          <p class="text-zinc-500 text-sm mt-2">كاميرا موقف السيارات</p>
         </div>
 
         <!-- تنبيه -->
         <div class="bg-zinc-800 rounded-2xl p-4 border border-red-500/20 text-right">
+          <p class="text-red-400 font-semibold">تم اكتشاف حركة</p>
 
-          <p class="text-red-400 font-semibold">
-            تم اكتشاف حركة
-          </p>
-
-          <p class="text-zinc-500 text-sm mt-2">
-            كاميرا المستودع
-          </p>
-
+          <p class="text-zinc-500 text-sm mt-2">camera 1</p>
         </div>
-
       </div>
-
     </div>
-
   </div>
 
+  <!-- الرسوم -->
+  <div class="grid grid-cols-3 gap-6 mt-6">
+    <!-- مخطط التنبيهات -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+      <div class="flex items-center justify-between mb-6">
+        <select
+          class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-2 text-sm text-white outline-none"
+        >
+          <option>آخر 7 أيام</option>
+        </select>
+
+        <h2 class="text-xl font-bold text-white">التنبيهات خلال الأسبوع</h2>
+      </div>
+
+      <div class="flex gap-4">
+        <!-- المحور -->
+        <div class="h-64 flex flex-col justify-between text-zinc-500 text-xs pb-8">
+          <span>20</span>
+          <span>15</span>
+          <span>10</span>
+          <span>5</span>
+          <span>0</span>
+        </div>
+
+        <!-- الرسم -->
+        <div class="flex-1">
+          <div class="relative h-64">
+            <!-- الخلفية -->
+            <div class="absolute inset-0 flex flex-col justify-between">
+              <div class="border-b border-zinc-800"></div>
+              <div class="border-b border-zinc-800"></div>
+              <div class="border-b border-zinc-800"></div>
+              <div class="border-b border-zinc-800"></div>
+              <div class="border-b border-zinc-800"></div>
+            </div>
+
+            <!-- SVG -->
+            <svg viewBox="0 0 700 260" class="w-full h-full" preserveAspectRatio="none">
+              <!-- glow -->
+              <path
+                d="M20 70
+                   L120 110
+                   L220 115
+                   L320 170
+                   L420 70
+                   L520 120
+                   L620 80"
+                fill="none"
+                stroke="#ef4444"
+                stroke-width="10"
+                opacity="0.15"
+                stroke-linecap="round"
+              />
+
+              <!-- الخط -->
+              <path
+                d="M20 70
+                   L120 110
+                   L220 115
+                   L320 170
+                   L420 70
+                   L520 120
+                   L620 80"
+                fill="none"
+                stroke="#ef4444"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+              <!-- النقاط -->
+              <circle cx="20" cy="70" r="6" fill="#ef4444" />
+              <circle cx="120" cy="110" r="6" fill="#ef4444" />
+              <circle cx="220" cy="115" r="6" fill="#ef4444" />
+              <circle cx="320" cy="170" r="6" fill="#ef4444" />
+              <circle cx="420" cy="70" r="6" fill="#ef4444" />
+              <circle cx="520" cy="120" r="6" fill="#ef4444" />
+              <circle cx="620" cy="80" r="6" fill="#ef4444" />
+            </svg>
+          </div>
+
+          <!-- الأيام -->
+          <div class="grid grid-cols-7 text-center text-zinc-500 text-xs mt-4">
+            <span>الأربعاء</span>
+            <span>الثلاثاء</span>
+            <span>الإثنين</span>
+            <span>الأحد</span>
+            <span>السبت</span>
+            <span>الجمعة</span>
+            <span>الخميس</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- أكثر الكاميرات -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+      <h2 class="text-lg font-bold text-white mb-6 text-right">أكثر الكاميرات تنبيه</h2>
+
+      <div class="flex items-center justify-center gap-6">
+        <!-- الدائرة -->
+        <div
+          class="w-44 h-44 rounded-full relative"
+          style="
+            background: conic-gradient(
+              #ef4444 0% 45%,
+              #7c3aed 45% 70%,
+              #3b82f6 70% 90%,
+              #22c55e 90% 100%
+            );
+          "
+        >
+          <div class="absolute inset-6 bg-zinc-900 rounded-full"></div>
+        </div>
+
+        <!-- التفاصيل -->
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+
+            <p class="text-white text-sm">Cam 01</p>
+
+            <p class="text-zinc-400 text-sm">45%</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-violet-600"></div>
+
+            <p class="text-white text-sm">Cam 03</p>
+
+            <p class="text-zinc-400 text-sm">25%</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+
+            <p class="text-white text-sm">Cam 02</p>
+
+            <p class="text-zinc-400 text-sm">20%</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+
+            <p class="text-white text-sm">Cam 04</p>
+
+            <p class="text-zinc-400 text-sm">10%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- أنواع التنبيهات -->
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+      <h2 class="text-lg font-bold text-white mb-6 text-right">أنواع التنبيهات</h2>
+
+      <div class="flex items-center justify-center gap-6">
+        <!-- الدائرة -->
+        <div
+          class="w-44 h-44 rounded-full relative flex items-center justify-center"
+          style="background: conic-gradient(#ef4444 0% 67%, #f97316 67% 100%)"
+        >
+          <div class="absolute inset-6 bg-zinc-900 rounded-full"></div>
+
+          <div class="relative z-10 text-center">
+            <p class="text-3xl font-bold text-white">67%</p>
+          </div>
+        </div>
+
+        <!-- التفاصيل -->
+        <div class="space-y-5">
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+
+            <p class="text-white text-sm">منطقة محظورة</p>
+
+            <p class="text-zinc-400 text-sm">67%</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+
+            <p class="text-white text-sm">وقت محظور</p>
+
+            <p class="text-zinc-400 text-sm">33%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

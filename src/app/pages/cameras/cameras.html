@@ -1,77 +1,388 @@
+<!-- Success Message -->
+<div
+  *ngIf="successMessage()"
+  class="fixed top-5 right-5 bg-emerald-500 text-black px-6 py-4 rounded-2xl shadow-2xl z-[100] font-bold"
+>
+  {{ successMessage() }}
+</div>
+
+<!-- Error Message -->
+<div
+  *ngIf="errorMessage()"
+  class="fixed top-5 right-5 bg-red-500 text-white px-6 py-4 rounded-2xl shadow-2xl z-[100] font-bold"
+>
+  {{ errorMessage() }}
+</div>
+
 <div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-4">
+      <!-- Webcam -->
+      <button
+        (click)="startWebcam()"
+        class="bg-emerald-500 hover:bg-emerald-400 transition px-6 py-3 rounded-2xl text-black font-bold"
+      >
+        + كاميرا الحاسب
+      </button>
 
-  <div>
+      <!-- Upload Video -->
+      <button
+        (click)="openVideoModal()"
+        class="bg-purple-500 hover:bg-purple-400 transition px-6 py-3 rounded-2xl text-white font-bold"
+      >
+        + رفع فيديو
+      </button>
 
-    <h1 class="text-4xl font-bold text-white">
-      Cameras Monitoring
-    </h1>
+      <!-- Add Camera -->
+      <button
+        (click)="openAddModal()"
+        class="bg-cyan-500 hover:bg-cyan-400 transition px-6 py-3 rounded-2xl text-black font-bold"
+      >
+        + إضافة كاميرا
+      </button>
+    </div>
 
-    <p class="text-zinc-500 mt-2">
-      Real-time AI camera monitoring system
-    </p>
+    <!-- Title -->
+    <div class="text-right">
+      <h1 class="text-3xl font-bold text-white">إدارة الكاميرات</h1>
 
+      <p class="text-zinc-500 mt-2 text-sm">
+        عدد الكاميرات:
+        {{ camerasCount() }}
+      </p>
+    </div>
   </div>
 
-  <div class="grid grid-cols-3 gap-6">
+  <!-- Cameras Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
+    <div
+      *ngFor="let camera of [...cameras(), ...videos()]; trackBy: trackByCamera"
+      class="bg-[#060B16] border border-cyan-500/10 rounded-3xl overflow-hidden shadow-2xl"
+    >
+      <!-- Camera Header -->
+      <div class="flex items-center justify-between px-4 py-3">
+        <!-- Status -->
+        <div class="flex items-center gap-2">
+          <div
+            class="w-3 h-3 rounded-full"
+            [class.bg-emerald-500]="camera.running && camera.has_frame"
+            [class.bg-red-500]="!camera.running || !camera.has_frame"
+            [class.animate-pulse]="camera.running && camera.has_frame"
+          ></div>
+          <span
+            *ngIf="camera.running && camera.has_frame"
+            class="text-emerald-400 text-xs font-semibold"
+          >
+            LIVE
+          </span>
 
-    @for (camera of cameras; track camera.name) {
+          <span
+            *ngIf="!camera.running || !camera.has_frame"
+            class="text-red-400 text-xs font-semibold"
+          >
+            OFFLINE
+          </span>
+        </div>
 
-      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+        <!-- Name -->
+        <div class="text-right">
+          <h2 class="text-white font-bold text-sm">
+            {{ camera.name }}
+          </h2>
 
-        <div class="relative h-72 bg-black flex items-center justify-center">
-
-          <div class="absolute top-4 left-4">
-
-            @if (camera.status === 'LIVE') {
-
-              <div class="bg-emerald-500 text-black text-sm px-4 py-2 rounded-xl font-bold">
-                LIVE
-              </div>
-
-            }
-
-            @if (camera.status === 'REC') {
-
-              <div class="bg-red-500 text-white text-sm px-4 py-2 rounded-xl font-bold">
-                REC
-              </div>
-
-            }
-
-          </div>
-
-          <p class="text-zinc-500 text-xl">
-            Camera Stream
+          <p class="text-zinc-500 text-xs mt-1">
+            {{ camera.location }}
           </p>
+          <div class="mt-2">
+            <span
+              *ngIf="camera.id === 999"
+              class="text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full"
+            >
+              WEBCAM
+            </span>
 
-        </div>
+            <span
+              *ngIf="camera.id === 0"
+              class="text-[10px] bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full"
+            >
+              VIDEO FILE
+            </span>
 
-        <div class="p-5">
-
-          <div class="flex items-center justify-between">
-
-            <div>
-
-              <h2 class="text-2xl font-bold text-white">
-                {{ camera.name }}
-              </h2>
-
-              <p class="text-zinc-500 mt-2">
-                AI Monitoring Active
-              </p>
-
-            </div>
-
-            <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
-
+            <span
+              *ngIf="camera.id !== 0 && camera.id !== 999"
+              class="text-[10px] bg-cyan-500/20 text-cyan-400 px-2 py-1 rounded-full"
+            >
+              RTSP
+            </span>
           </div>
-
         </div>
-
       </div>
 
-    }
+      <!-- Stream -->
+      <div #videoContainer class="relative bg-black overflow-hidden aspect-video">
+        <img
+          [src]="'http://127.0.0.1:8001/api/monitoring/stream/' + camera.id"
+          class="w-full object-contain bg-black"
+        />
 
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="flex items-center justify-between px-5 py-4 border-t border-zinc-800">
+        <!-- Active -->
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+
+          <span class="text-zinc-400 text-xs"> {{ camera.fps }} FPS </span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-5 text-zinc-400 text-xl">
+          <!-- Fullscreen -->
+          <button
+            (click)="toggleFullscreen(videoContainer)"
+            class="hover:text-cyan-400 transition"
+            title="تكبير البث"
+          >
+            ⛶
+          </button>
+
+          <!-- Settings -->
+          <button
+            class="hover:text-cyan-400 transition"
+            title="إعدادات الكاميرا"
+            (click)="openSettings(camera)"
+          >
+            ⚙️
+          </button>
+
+          <!-- Delete -->
+          <button
+            class="hover:text-red-500 transition"
+            title="حذف الكاميرا"
+            (click)="deleteCamera(camera)"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Settings Sidebar -->
+  <div
+    *ngIf="selectedCamera() as selectedCamera"
+    class="fixed top-0 left-0 h-screen w-[420px] bg-zinc-950 border-r border-zinc-800 z-50 shadow-2xl overflow-y-auto"
+  >
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-zinc-800">
+      <button (click)="closeSettings()" class="text-zinc-500 hover:text-white text-2xl">✕</button>
+
+      <div class="text-right">
+        <h2 class="text-2xl font-bold text-white">إعدادات الكاميرا</h2>
+
+        <p class="text-zinc-500 text-sm mt-1">تعديل بيانات الكاميرا</p>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 space-y-6">
+      <!-- Name -->
+      <div>
+        <label class="text-sm text-zinc-400 block mb-2"> اسم الكاميرا </label>
+
+        <input
+          type="text"
+          [(ngModel)]="selectedCamera.name"
+          class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500"
+        />
+      </div>
+
+      <!-- Location -->
+      <div>
+        <label class="text-sm text-zinc-400 block mb-2"> اسم المكان </label>
+
+        <input
+          type="text"
+          [(ngModel)]="selectedCamera.location"
+          class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500"
+        />
+      </div>
+
+      <!-- RTSP -->
+      <div>
+        <label class="text-sm text-zinc-400 block mb-2"> رابط RTSP </label>
+
+        <input
+          type="text"
+          [(ngModel)]="selectedCamera.rtsp_url"
+          class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500"
+        />
+      </div>
+
+      <!-- IP -->
+      <div>
+        <label class="text-sm text-zinc-400 block mb-2"> عنوان IP </label>
+
+        <input
+          type="text"
+          [(ngModel)]="selectedCamera.ip_address"
+          class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-3 text-white outline-none focus:border-cyan-500"
+        />
+      </div>
+
+      <!-- FPS -->
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-zinc-400">عدد الإطارات بالثانية</p>
+
+          <p class="text-cyan-400 font-bold">
+            {{ selectedCamera.fps }}
+          </p>
+        </div>
+
+        <input type="range" min="1" max="60" [(ngModel)]="selectedCamera.fps" class="w-full" />
+      </div>
+
+      <!-- Save -->
+      <button
+        (click)="saveChanges()"
+        class="w-full bg-cyan-500 hover:bg-cyan-400 transition rounded-2xl py-4 text-black font-bold text-lg"
+      >
+        حفظ التعديلات
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Camera Modal -->
+<div
+  *ngIf="showAddModal()"
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center"
+>
+  <div class="w-[500px] bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <button (click)="closeAddModal()" class="text-zinc-500 hover:text-white text-2xl">✕</button>
+
+      <div class="text-right">
+        <h2 class="text-2xl font-bold text-white">إضافة كاميرا جديدة</h2>
+
+        <p class="text-zinc-500 text-sm mt-1">أدخل بيانات الكاميرا</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-5">
+      <!-- Name -->
+      <input
+        type="text"
+        [(ngModel)]="newCamera.name"
+        placeholder="اسم الكاميرا"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-cyan-500"
+      />
+
+      <!-- Location -->
+      <input
+        type="text"
+        [(ngModel)]="newCamera.location"
+        placeholder="الموقع"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-cyan-500"
+      />
+
+      <!-- RTSP -->
+      <input
+        type="text"
+        [(ngModel)]="newCamera.rtsp_url"
+        placeholder="RTSP URL"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-cyan-500"
+      />
+
+      <!-- IP -->
+      <input
+        type="text"
+        [(ngModel)]="newCamera.ip_address"
+        placeholder="IP Address"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-cyan-500"
+      />
+
+      <!-- FPS -->
+      <input
+        type="number"
+        [(ngModel)]="newCamera.fps"
+        placeholder="FPS"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-cyan-500"
+      />
+
+      <!-- Save -->
+      <button
+        (click)="addCamera()"
+        [disabled]="isSaving()"
+        class="w-full bg-cyan-500 hover:bg-cyan-400 transition rounded-2xl py-4 text-black font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {{ isSaving() ? 'جاري الحفظ...' : 'إضافة الكاميرا' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Video Modal -->
+<div
+  *ngIf="showVideoModal()"
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center"
+>
+  <div class="w-[500px] bg-zinc-950 border border-zinc-800 rounded-3xl p-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <button (click)="closeVideoModal()" class="text-zinc-500 hover:text-white text-2xl">✕</button>
+
+      <div class="text-right">
+        <h2 class="text-2xl font-bold text-white">رفع فيديو</h2>
+
+        <p class="text-zinc-500 text-sm mt-1">أدخل اسم ومسار الفيديو</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-5">
+      <!-- Name -->
+      <input
+        type="text"
+        [ngModel]="newVideo().name"
+        (ngModelChange)="
+          newVideo.set({
+            ...newVideo(),
+            name: $event,
+          })
+        "
+        placeholder="اسم الفيديو"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-purple-500"
+      />
+
+      <!-- Path -->
+      <input
+        type="text"
+        [ngModel]="newVideo().path"
+        (ngModelChange)="
+          newVideo.set({
+            ...newVideo(),
+            path: $event,
+          })
+        "
+        placeholder="مسار الفيديو"
+        class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl px-4 py-4 text-white outline-none focus:border-purple-500"
+      />
+
+      <!-- Save -->
+      <button
+        (click)="addVideo()"
+        class="w-full bg-purple-500 hover:bg-purple-400 transition rounded-2xl py-4 text-white font-bold text-lg"
+      >
+        إضافة الفيديو
+      </button>
+    </div>
+  </div>
 </div>

@@ -1,27 +1,20 @@
 <div class="h-screen w-72 bg-zinc-950 border-l border-zinc-800 flex flex-col justify-between">
-
   <div>
-
     <!-- الشعار -->
     <div class="p-6 border-b border-zinc-800 text-right">
+      <h1 class="text-4xl font-extrabold text-cyan-400 tracking-wide">SENTINELX</h1>
 
-      <h1 class="text-4xl font-extrabold text-cyan-400 tracking-wide">
-        SENTINELX
-      </h1>
-
-      <p class="text-zinc-500 mt-2 text-sm">
-        نظام مراقبة ذكي
-      </p>
-
+      <p class="text-zinc-500 mt-2 text-sm">نظام مراقبة ذكي</p>
     </div>
 
     <!-- القائمة -->
     <nav class="p-4 space-y-2">
-
       <!-- لوحة التحكم -->
       <a
         routerLink="/"
-        class="flex items-center justify-end gap-3 bg-cyan-500/20 text-cyan-400 p-4 rounded-2xl border border-cyan-500/20"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center justify-end gap-3 text-zinc-300 p-4 rounded-2xl hover:bg-zinc-900 transition"
       >
         <span>لوحة التحكم</span>
         <span>🏠</span>
@@ -30,6 +23,7 @@
       <!-- الكاميرات -->
       <a
         routerLink="/cameras"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
         class="flex items-center justify-end gap-3 hover:bg-zinc-900 text-zinc-300 p-4 rounded-2xl transition"
       >
         <span>الكاميرات</span>
@@ -39,6 +33,7 @@
       <!-- التنبيهات -->
       <a
         routerLink="/alerts"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
         class="flex items-center justify-end gap-3 hover:bg-zinc-900 text-zinc-300 p-4 rounded-2xl transition"
       >
         <span>التنبيهات</span>
@@ -48,6 +43,7 @@
       <!-- المناطق المحظورة -->
       <a
         routerLink="/zones"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
         class="flex items-center justify-end gap-3 hover:bg-zinc-900 text-zinc-300 p-4 rounded-2xl transition"
       >
         <span>المناطق المحظورة</span>
@@ -57,6 +53,7 @@
       <!-- التقارير -->
       <a
         routerLink="/reports"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
         class="flex items-center justify-end gap-3 hover:bg-zinc-900 text-zinc-300 p-4 rounded-2xl transition"
       >
         <span>التقارير</span>
@@ -66,37 +63,27 @@
       <!-- الإعدادات -->
       <a
         routerLink="/settings"
+        routerLinkActive="bg-cyan-500/20 text-cyan-400 border border-cyan-500/20"
         class="flex items-center justify-end gap-3 hover:bg-zinc-900 text-zinc-300 p-4 rounded-2xl transition"
       >
         <span>الإعدادات</span>
         <span>⚙️</span>
       </a>
-
     </nav>
 
-  </div>
+    <!-- حالة النظام -->
+    <div class="p-5">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+        <div class="flex items-center justify-end gap-3">
+          <p class="text-emerald-400 font-semibold">النظام يعمل بشكل طبيعي</p>
 
-  <!-- حالة النظام -->
-  <div class="p-5">
+          <div class="w-4 h-4 bg-emerald-500 rounded-full animate-pulse"></div>
+        </div>
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
-
-      <div class="flex items-center justify-end gap-3">
-
-        <p class="text-emerald-400 font-semibold">
-          النظام يعمل بشكل طبيعي
+        <p class="text-zinc-500 text-sm mt-3 text-right leading-7">
+          جميع أنظمة المراقبة والكشف تعمل بكفاءة واستقرار.
         </p>
-
-        <div class="w-4 h-4 bg-emerald-500 rounded-full animate-pulse"></div>
-
       </div>
-
-      <p class="text-zinc-500 text-sm mt-3 text-right leading-7">
-        جميع أنظمة المراقبة والكشف تعمل بكفاءة واستقرار.
-      </p>
-
     </div>
-
   </div>
-
 </div>
